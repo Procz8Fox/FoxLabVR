@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fox Lab Official Site</title>
+    <style>
+        :root {
+            --primary-bg: linear-gradient(135deg, #ff6b35, #f7931e, #ffcc02);
+            --secondary-bg: rgba(255, 255, 255, 0.1);
+            --card-bg: rgba(255, 255, 255, 0.15);
+            --text-color: white;
+            --accent-color: #ffcc02;
+            --border-color: rgba(255, 107, 53, 0.3);
+            --staff-bg: linear-gradient(135deg, rgba(34, 193, 195, 0.2), rgba(253, 187, 45, 0.2));
+            --clowns-bg: linear-gradient(135deg, rgba(220, 38, 127, 0.2), rgba(255, 107, 107, 0.2));
+        }
+
+        [data-theme="dark"] {
+            --primary-bg: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            --secondary-bg: rgba(255, 255, 255, 0.05);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text-color: #e0e0e0;
+            --accent-color: #64b5f6;
+            --border-color: rgba(100, 181, 246, 0.3);
+            --staff-bg: linear-gradient(135deg, rgba(30, 60, 114, 0.3), rgba(42, 67, 101, 0.3));
+            --clowns-bg: linear-gradient(135deg, rgba(139, 69, 19, 0.3), rgba(160, 30, 30, 0.3));
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--primary-bg);
+            min-height: 100vh;
+            color: var(--text-color);
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 50px;
+            padding: 10px 20px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+            background: var(--secondary-bg);
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 60px 0 40px;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 4rem;
+            font-weight: bold;
+            text-shadow: 4px 4px 8px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--text-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px rgba(255, 255, 255, 0.5); }
+            to { text-shadow: 0 0 30px var(--accent-color); }
+        }
+
+        .tagline {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Main CTA Button */
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff4500, #ff6b35);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            margin: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.4);
+        }
+
+        .discord-button {
+            background: linear-gradient(45deg, #7289da, #5865f2);
+        }
+
+        /* Sections */
+        .section {
+            margin: 60px 0;
+            padding: 40px;
+            background: var(--secondary-bg);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 2px solid var(--border-color);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section:hover {
+            transform: scale(1.01);
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--text-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        /* Staff Section Background */
+        .staff-section {
+            background: var(--staff-bg);
+            border: 2px solid rgba(34, 193, 195, 0.4);
+        }
+
+        .staff-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(34, 193, 195, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(253, 187, 45, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 70%, rgba(45, 253, 107, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Clowns Section Background */
+        .clowns-section {
+            background: var(--clowns-bg);
+            border: 2px solid rgba(220, 38, 127, 0.4);
+        }
+
+        .clowns-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(220, 38, 127, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 20%, rgba(255, 107, 107, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(255, 69, 0, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        /* Grid Layouts */
+        .staff-grid, .clowns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Card Styles */
+        .staff-card, .clown-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .staff-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(34, 193, 195, 0.1) 0%, transparent 70%);
+            animation: rotate 15s linear infinite;
+        }
+
+        .clown-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(220, 38, 127, 0.1) 0%, transparent 70%);
+            animation: rotate 15s linear infinite reverse;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .staff-card:hover, .clown-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--accent-color);
+        }
+
+        /* Profile Image Styles */
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            object-fit: cover;
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .staff-card:hover .profile-image,
+        .clown-card:hover .profile-image {
+            transform: scale(1.1);
+            border-color: #fff;
+        }
+
+        .fallback-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, var(--accent-color), #ff6b35);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            animation: bounce 2s infinite;
+            position: relative;
+            z-index: 1;
+            border: 4px solid var(--accent-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .clown-card .fallback-avatar {
+            background: linear-gradient(45deg, #dc143c, #ff4500);
+            animation: shake 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+
+        .name {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            font-weight: bold;
+            position: relative;
+            z-index: 1;
+        }
+
+        .role {
+            color: var(--accent-color);
+            font-size: 1rem;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            line-height: 1.4;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        /* Floating Elements */
+        .floating-element {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .fox-paw {
+            font-size: 2rem;
+            color: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.1rem;
+            }
+            
+            .section {
+                padding: 20px;
+                margin: 30px 0;
+            }
+            
+            .section h2 {
+                font-size: 2rem;
+            }
+            
+            .staff-grid, .clowns-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .theme-toggle {
+                position: relative;
+                margin: 10px auto;
+                display: block;
+                width: fit-content;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        🌓 Toggle Theme
+    </div>
+
+    <!-- Floating Elements -->
+    <div class="floating-element fox-paw" style="top: 20%; left: 10%; animation-delay: 0s;">🐾</div>
+    <div class="floating-element fox-paw" style="top: 60%; right: 15%; animation-delay: 2s;">🐾</div>
+    <div class="floating-element fox-paw" style="top: 80%; left: 70%; animation-delay: 4s;">🐾</div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1 class="logo">🦊 FOX LAB</h1>
+            <p class="tagline">Step into the ultimate VR fox adventure on Meta Quest!</p>
+            
+            <div>
+                <a href="https://www.meta.com/en-gb/experiences/fox-lab/9636434119704017/#additional-contents" class="cta-button" target="_blank">
+                    🎮 Play on Meta Quest Store
+                </a>
+                <a href="https://discord.gg/dMPVWJKC8U" class="cta-button discord-button" target="_blank">
+                    💬 Join Our Discord
+                </a>
+            </div>
+        </header>
+
+        <!-- About Section -->
+        <section class="section">
+            <h2>🧪 About Fox Lab</h2>
+            <p style="font-size: 1.2rem; line-height: 1.6; text-align: center;">
+                Welcome to Fox Lab, in this game you will experience how is being a fox without legs (Gorilla Tag Movement), if there is 2 people in the lobby (or more then 1) the tag round will start, one of the players gets wet and gotta tag (wet) all of the other foxes. Download the game on Meta and have fun!
+            </p>
+        </section>
+
+        <!-- Staff Section -->
+        <section class="section staff-section">
+            <h2>👥 Our Team</h2>
+            <p style="text-align: center; margin-bottom: 30px; font-size: 1.1rem; position: relative; z-index: 1;">
+                Meet the dedicated team behind Fox Lab VR!
+            </p>
+            <div class="staff-grid" id="staffGrid">
+                <!-- Staff cards will be generated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Clowns Section -->
+        <section class="section clowns-section">
+            <h2>🤡 Hall of Clowns</h2>
+            <p style="text-align: center; margin-bottom: 30px; font-size: 1.1rem; position: relative; z-index: 1; color: #ffcccc;">
+                These users have been banned or caused trouble in our community. Learn from their mistakes!
+            </p>
+            <div class="clowns-grid" id="clownsGrid">
+                <!-- Clown cards will be generated by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2025 Fox Lab VR. All rights reserved.</p>
+            <p style="margin-top: 10px;">
+                <a href="https://www.meta.com/en-gb/experiences/fox-lab/9636434119704017/#additional-contents" style="color: var(--accent-color); text-decoration: none;">Meta Quest Store</a> | 
+                <a href="https://discord.gg/dMPVWJKC8U" style="color: var(--accent-color); text-decoration: none;">Discord Community</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        // ========================================
+        // 🔧 EASILY EDITABLE DATA SECTIONS
+        // ========================================
+        
+        // 👥 STAFF DATA - Edit names, roles, descriptions and image URLs here
+        const staffData = [
+            {
+                name: "Procz Fox",
+                role: "Developer / Owner",
+                imageUrl: "https://cdn.discordapp.com/avatars/1089089469656879176/40854a1b4ffb2a5d4f23e8427ef7f72c.png?size=1024", // Add image URL here or leave empty for fallback icon
+                fallbackIcon: "🦊",
+                description: "Procz is the creator of the game, he made the original idea and made the game. (Italian & English)"
+            },
+            {
+                name: "Keo.CS",
+                role: "Coder / Admin", 
+                imageUrl: "https://cdn.discordapp.com/avatars/926069060393893911/41f64a5d883cf902f2afc8641232ab41.png?size=1024", // Add image URL here
+                fallbackIcon: "🗒️",
+                description: "Makes codes for the game, Procz's Long time friend and W guy. (English & German)"
+            },
+            {
+                name: "Juicy",
+                role: "Model Making",
+                imageUrl: "https://cdn.discordapp.com/avatars/1287670182478876702/63ccc3d8f1ad29cd1e9644b6607cc233.png?size=1024", // Add image URL here
+                fallbackIcon: "🎨", 
+                description: "Made Fox Lab's Iconic Player Model."
+            },
+            {
+                name: "T1by",
+                role: "Admin",
+                imageUrl: "https://cdn.discordapp.com/avatars/1373609205642039356/55622f18d439e21061160ad7be7964c8.png?size=1024", // Add image URL here
+                fallbackIcon: "🔧",
+                description: "Fox Lab's Admin, Procz's Closest Friend (IRL). (Italian)"
+            },
+            {
+                name: "DavR1234", 
+                role: "Ideas / Admin",
+                imageUrl: "1062457572797460480", // Add image URL here
+                fallbackIcon: "🤔",
+                description: "Gives ideas, Fox Lab's Admin, Procz's Close Friend (Not IRL)."
+            },
+            // Add more staff members here by copying the format above
+        ];
+
+        // 🤡 HALL OF SHAME DATA - Edit banned users info here
+        const clownsData = [
+            {
+                name: "GNlucio",
+                reason: "Toxicity", 
+                imageUrl: "", // Add image URL here or leave empty for fallback icon
+                fallbackIcon: "🦍",
+                description: "Banned for repeatedly harassing other players and using offensive language."
+            },
+          
+            // Add more banned users here by copying the format above
+        ];
+
+        // ========================================
+        // 🎨 FUNCTIONS (Don't edit unless you know what you're doing)
+        // ========================================
+
+        // Theme toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            body.setAttribute('data-theme', newTheme);
+        }
+
+        // Generate staff cards
+        function generateStaffCards() {
+            const grid = document.getElementById('staffGrid');
+            grid.innerHTML = '';
+            
+            staffData.forEach((staff) => {
+                const card = document.createElement('div');
+                card.className = 'staff-card';
+                
+                // Create image or fallback avatar
+                const avatarHtml = staff.imageUrl 
+                    ? `<img src="${staff.imageUrl}" alt="${staff.name}" class="profile-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                       <div class="fallback-avatar" style="display: none;">${staff.fallbackIcon}</div>`
+                    : `<div class="fallback-avatar">${staff.fallbackIcon}</div>`;
+                
+                card.innerHTML = `
+                    ${avatarHtml}
+                    <div class="name">${staff.name}</div>
+                    <div class="role">${staff.role}</div>
+                    <div class="description">${staff.description}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Generate clown cards
+        function generateClownCards() {
+            const grid = document.getElementById('clownsGrid');
+            grid.innerHTML = '';
+            
+            clownsData.forEach((clown) => {
+                const card = document.createElement('div');
+                card.className = 'clown-card';
+                
+                // Create image or fallback avatar
+                const avatarHtml = clown.imageUrl 
+                    ? `<img src="${clown.imageUrl}" alt="${clown.name}" class="profile-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                       <div class="fallback-avatar" style="display: none;">${clown.fallbackIcon}</div>`
+                    : `<div class="fallback-avatar">${clown.fallbackIcon}</div>`;
+                
+                card.innerHTML = `
+                    ${avatarHtml}
+                    <div class="name">${clown.name}</div>
+                    <div class="role" style="color: #ff6b6b;">Banned for: ${clown.reason}</div>
+                    <div class="description">${clown.description}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            generateStaffCards();
+            generateClownCards();
+
+            // Animate sections on scroll
+            const sections = document.querySelectorAll('.section');
+            const intersectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                intersectionObserver.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
